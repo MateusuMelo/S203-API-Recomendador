@@ -1,13 +1,12 @@
 import pandas as pd
 import numpy as np
 from database import Database
-from sklearn.neighbors import KNeighborsClassifier
+from sklearn.linear_model import SGDClassifier
 
 
 def get_recommendation(user_id):
     args = f"SELECT rating, movie_id FROM recommend_myrating WHERE user_id = {user_id}"  # Lista de avaliações do usuario
     results = Database().query(args)
-
 
     if not results:  # Caso o usuario não exista
         best_movies = f"SELECT rating, movie_id FROM recommend_myrating ORDER BY rating DESC"  # filtrando todos as avaliações, ordenando da maior nota para a menor
@@ -17,8 +16,6 @@ def get_recommendation(user_id):
         rating_list = rating_list.drop_duplicates()
         rating_list = rating_list.to_json(index=False, orient="records")
         return rating_list
-
-
 
     rating_list = pd.DataFrame(results, columns=["rating", "movie_id"])
 
@@ -47,14 +44,13 @@ def get_recommendation(user_id):
     merged = pd.merge(movie_list, rating_list, how='outer', indicator=True)
     test_data = merged[merged['_merge'] == 'left_only'].drop('_merge', axis=1)
 
-    # TREINAMENTO DO KNN
-    neigh = KNeighborsClassifier(n_neighbors=3)
     X = np.array([np.array(xi) for xi in training_data['genre_id']])
     Y = np.array(training_data['rating'])
     inference_data = np.array([np.array(xi) for xi in test_data['genre_id']])
+    # TREINAMENTO DO KNN
 
+    neigh = SGDClassifier()
     neigh.fit(X, Y)
-
     rating_inferences = neigh.predict(inference_data)
 
     test_data['rating'] = rating_inferences
@@ -65,4 +61,4 @@ def get_recommendation(user_id):
     return final_list
 
 
-print(get_recommendation(4))
+print(get_recommendation(1))
