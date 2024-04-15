@@ -1,9 +1,8 @@
 import sqlite3
 
-
 class Database:
     def __init__(self):
-        self.db_path = "db.sqlite3"
+        self.db_path = "../server/db.sqlite3"
 
     def query(self, query):
         connect = sqlite3.connect(self.db_path)
@@ -15,6 +14,3 @@ class Database:
             return print(e)
         finally:
             connect.close()
-
-
-data = Database().query("test")

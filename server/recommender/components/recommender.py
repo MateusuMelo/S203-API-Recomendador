@@ -1,9 +1,7 @@
 import pandas as pd
 import numpy as np
-from database import Database
-from sklearn.linear_model import SGDClassifier
-
-
+from .database import Database
+from sklearn.neighbors import KNeighborsClassifier
 def get_recommendation(user_id):
     args = f"SELECT rating, movie_id FROM recommend_myrating WHERE user_id = {user_id}"  # Lista de avaliações do usuario
     results = Database().query(args)
@@ -14,7 +12,7 @@ def get_recommendation(user_id):
 
         rating_list = pd.DataFrame(results, columns=["rating", "movie_id"])
         rating_list = rating_list.drop_duplicates()
-        rating_list = rating_list.to_json(index=False, orient="records")
+        rating_list = rating_list['movie_id'].to_json(index=False, orient="records")
         return rating_list
 
     rating_list = pd.DataFrame(results, columns=["rating", "movie_id"])
@@ -49,16 +47,15 @@ def get_recommendation(user_id):
     inference_data = np.array([np.array(xi) for xi in test_data['genre_id']])
     # TREINAMENTO DO KNN
 
-    neigh = SGDClassifier()
+    neigh = KNeighborsClassifier(n_neighbors=5, weights='distance')
     neigh.fit(X, Y)
     rating_inferences = neigh.predict(inference_data)
 
     test_data['rating'] = rating_inferences
-    print(test_data)
-    final_list = test_data[['rating', 'movie_id']].sort_values(by=['rating'], ascending=False)
-    final_list = final_list.to_json(index=False, orient="records")
+    final_list = test_data[['rating', 'movie_id']].sort_values(by=['rating'], ascending=False) # ordenando pela nota
+    final_list = final_list.drop(final_list[final_list.rating < 3].index) # removendo notas menores que 3
+
+    final_list = final_list['movie_id'].to_json(index=False, orient="records")
 
     return final_list
 
-
-print(get_recommendation(1))
