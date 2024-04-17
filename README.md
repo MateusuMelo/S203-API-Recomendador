@@ -87,10 +87,44 @@ pip install -r requirements.txt
 .venv/Scripts/activate
 python main.py
 ```
+4. Run Flask server
+
+```sh
+cd server/
+flask run
+```
 
 ## Usage
+# get_similar()
+[API LINK](http://127.0.0.1:5000)
+* To get similar movies 
+http://127.0.0.1:5000/similar/<id_movie>.
 
-[Use this link to see the tutorial](https://www.youtube.com/)
+* exemple : 
+http://127.0.0.1:5000/similar/19
+
+* results:
+```JSON
+{
+ "movies_id_list": "[30,37,54,33,32,47,18,42,43,45,46,48,40,49,50,51,52,53,55,58,41,39,20,29,25,26,38,28,27,31,34,36,59]"
+}
+```
+
+# recommend() 
+[API LINK](http://127.0.0.1:5000)
+* To get similar movies 
+http://127.0.0.1:5000/recommend/<id_user>.
+
+* exemple : 
+http://127.0.0.1:5000/recommend/1
+
+* results:
+```JSON
+{
+ "movies_id_list": "[20,34,58,56,53,49,43,42,23,40,30,24,59,35,37,39,33,47,28,25]"
+}
+```
+
 
 ## Roadmap
 
