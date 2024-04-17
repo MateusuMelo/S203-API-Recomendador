@@ -1,10 +1,7 @@
 import pandas as pd
-import numpy as np
 import json
 from .database import Database
-from sklearn.neighbors import KDTree
 from sklearn.metrics import jaccard_score
-
 
 
 def get_recommendation(user_id):
@@ -45,29 +42,21 @@ def get_recommendation(user_id):
     movie_list['genre_id'] = movie_list['genre_id'].apply(lambda x: x + [-1] * (
             3 - len(x)))  # padronizando numero de generos para 3, e adicionando -1 nos generos faltantes
 
-    # concatenando os dois dataframes
-    training_data = pd.merge(movie_list, rating_list, on='movie_id')
-
     # Selecionar os filmes que não foram avaliados pelo usuario
     merged = pd.merge(movie_list, rating_list, how='outer', indicator=True)
-    test_data = merged[merged['_merge'] == 'left_only'].drop('_merge', axis=1)
     user_movies = merged[merged['_merge'] == 'both'].drop('_merge', axis=1)
     user_movies = user_movies.drop(user_movies[user_movies.rating <= 3].index)
 
-    final_list = pd.DataFrame(columns=('index', 'movie_id','similarity_coefficient'))
+    final_list = pd.DataFrame(columns=('index', 'movie_id', 'similarity_coefficient'))
     for movie_id_user in user_movies['movie_id']:
-        similar_movies = json.loads(get_similar((movie_id_user)))['data']
+        similar_movies = json.loads(get_similar(movie_id_user))['data']
         for data in similar_movies:
             final_list.loc[len(final_list.index)] = data
 
-    print(user_movies)
     final_list = final_list.groupby('movie_id').agg({'similarity_coefficient': 'mean'}).reset_index()
-
-
     final_list = final_list.sort_values(by=['similarity_coefficient'], ascending=False)  # ordenando pela nota
-    final_list = final_list[['movie_id','similarity_coefficient']].to_json(index=None, orient="table")
+    final_list = final_list[['movie_id', 'similarity_coefficient']].to_json(index=None, orient="table")
     return final_list
-
 
 def get_similar(id_movie):
     args = f"SELECT id, genre FROM recommend_movie"  # Lista de de filmes
