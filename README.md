@@ -87,7 +87,7 @@ pip install -r requirements.txt
 .venv/Scripts/activate
 python main.py
 ```
-4. Run Flask server
+5. Run Flask server
 
 ```sh
 cd server/
@@ -101,12 +101,78 @@ flask run
 http://127.0.0.1:5000/similar/<id_movie>.
 
 * exemple : 
-http://127.0.0.1:5000/similar/19
+http://127.0.0.1:5000/similar/53
 
-* results:
+* results example:
 ```JSON
 {
- "movies_id_list": "[30,37,54,33,32,47,18,42,43,45,46,48,40,49,50,51,52,53,55,58,41,39,20,29,25,26,38,28,27,31,34,36,59]"
+  "data": [
+    {
+      "index": 2,
+      "movie_id": 20,
+      "similarity_coefficient": 1
+    },
+    {
+      "index": 31,
+      "movie_id": 49,
+      "similarity_coefficient": 1
+    },
+    {
+      "index": 0,
+      "movie_id": 18,
+      "similarity_coefficient": 0.6666666667
+    },
+    {
+      "index": 30,
+      "movie_id": 48,
+      "similarity_coefficient": 0.6666666667
+    },
+    {
+      "index": 37,
+      "movie_id": 55,
+      "similarity_coefficient": 0.6666666667
+    },
+    {
+      "index": 28,
+      "movie_id": 46,
+      "similarity_coefficient": 0.6666666667
+    },
+    {
+      "index": 13,
+      "movie_id": 31,
+      "similarity_coefficient": 0.6666666667
+    },
+    {
+      "index": 24,
+      "movie_id": 42,
+      "similarity_coefficient": 0.3333333333
+    },
+    {
+      "index": 25,
+      "movie_id": 43,
+      "similarity_coefficient": 0.3333333333
+    }
+  ],
+  "schema": {
+    "fields": [
+      {
+        "name": "index",
+        "type": "integer"
+      },
+      {
+        "name": "movie_id",
+        "type": "integer"
+      },
+      {
+        "name": "similarity_coefficient",
+        "type": "number"
+      }
+    ],
+    "pandas_version": "1.4.0",
+    "primaryKey": [
+      "index"
+    ]
+  }
 }
 ```
 
@@ -118,10 +184,53 @@ http://127.0.0.1:5000/recommend/<id_user>.
 * exemple : 
 http://127.0.0.1:5000/recommend/1
 
-* results:
+* results example:
 ```JSON
 {
- "movies_id_list": "[20,34,58,56,53,49,43,42,23,40,30,24,59,35,37,39,33,47,28,25]"
+ {
+  "data": [
+    {
+      "index": 5,
+      "movie_id": 23,
+      "similarity_coefficient": 0.6666666666
+    },
+    {
+      "index": 12,
+      "movie_id": 30,
+      "similarity_coefficient": 0.5238095238
+    },
+    {
+      "index": 3,
+      "movie_id": 21,
+      "similarity_coefficient": 0.5
+    },
+    {
+      "index": 23,
+      "movie_id": 41,
+      "similarity_coefficient": 0.2777777778
+    }
+  ],
+  "schema": {
+    "fields": [
+      {
+        "name": "index",
+        "type": "integer"
+      },
+      {
+        "name": "movie_id",
+        "type": "integer"
+      },
+      {
+        "name": "similarity_coefficient",
+        "type": "number"
+      }
+    ],
+    "pandas_version": "1.4.0",
+    "primaryKey": [
+      "index"
+    ]
+  }
+}
 }
 ```
 
