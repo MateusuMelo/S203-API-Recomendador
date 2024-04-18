@@ -1,28 +1,33 @@
 import pandas as pd
-import numpy as np
+import json
 from .database import Database
-from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import jaccard_score
 
 
 def get_recommendation(user_id):
     args = f"SELECT rating, movie_id FROM recommend_myrating WHERE user_id = {user_id}"  # Lista de avaliações do usuario
     results = Database().query(args)
+    rating_list = pd.DataFrame(results, columns=["rating", "movie_id"])
 
-    if not results:  # Caso o usuario não exista
+    if not results:  # Caso o usuario não exista retorna os filmes e as medias de avaliação
         best_movies = f"SELECT rating, movie_id FROM recommend_myrating ORDER BY rating DESC"  # filtrando todos as avaliações, ordenando da maior nota para a menor
         results = Database().query(best_movies)
 
         rating_list = pd.DataFrame(results, columns=["rating", "movie_id"])
-        rating_list = rating_list.drop_duplicates()
-        rating_list = rating_list['movie_id'].to_json(index=False, orient="records")
-        return rating_list
 
-    rating_list = pd.DataFrame(results, columns=["rating", "movie_id"])
+        # Calculando a média da coluna 'outra_coluna' para cada 'movie_id' e removendo os valores duplicados by gpt
+        rating_list = rating_list.groupby('movie_id').agg({'rating': 'mean'}).reset_index()
+
+        rating_list = rating_list[['movie_id', 'rating']].sort_values(by=['rating'],
+                                                                      ascending=False)  # ordenando pela nota
+
+        rating_list = rating_list[['movie_id', 'rating']].to_json(index=False, orient="table")
+        return rating_list
 
     args = f"SELECT id, genre FROM recommend_movie"  # Lista de avaliações do usuario
     results = Database().query(args)
     movie_list = pd.DataFrame(results, columns=["movie_id", "genre"])
+    print(movie_list)
     movie_list['genre'] = movie_list['genre'].str.split(
         ',')  # transformando genre em uma lista de strings. Estava uma unica string
 
@@ -37,31 +42,21 @@ def get_recommendation(user_id):
     movie_list['genre_id'] = movie_list['genre_id'].apply(lambda x: x + [-1] * (
             3 - len(x)))  # padronizando numero de generos para 3, e adicionando -1 nos generos faltantes
 
-    # concatenando os dois dataframes
-
-    training_data = pd.merge(movie_list, rating_list, on='movie_id')
-
     # Selecionar os filmes que não foram avaliados pelo usuario
     merged = pd.merge(movie_list, rating_list, how='outer', indicator=True)
-    test_data = merged[merged['_merge'] == 'left_only'].drop('_merge', axis=1)
+    user_movies = merged[merged['_merge'] == 'both'].drop('_merge', axis=1)
+    user_movies = user_movies.drop(user_movies[user_movies.rating <= 3].index)
 
-    X = np.array([np.array(xi) for xi in training_data['genre_id']])
-    Y = np.array(training_data['rating'])
-    inference_data = np.array([np.array(xi) for xi in test_data['genre_id']])
-    # TREINAMENTO DO KNN
+    final_list = pd.DataFrame(columns=('index', 'movie_id', 'similarity_coefficient'))
+    for movie_id_user in user_movies['movie_id']:
+        similar_movies = json.loads(get_similar(movie_id_user))['data']
+        for data in similar_movies:
+            final_list.loc[len(final_list.index)] = data
 
-    neigh = KNeighborsClassifier(n_neighbors=5, weights='distance')
-    neigh.fit(X, Y)
-    rating_inferences = neigh.predict(inference_data)
-
-    test_data['rating'] = rating_inferences
-    final_list = test_data[['rating', 'movie_id']].sort_values(by=['rating'], ascending=False)  # ordenando pela nota
-    final_list = final_list.drop(final_list[final_list.rating < 3].index)  # removendo notas menores que 3
-
-    final_list = final_list['movie_id'].to_json(index=False, orient="records")
-
+    final_list = final_list.groupby('movie_id').agg({'similarity_coefficient': 'mean'}).reset_index()
+    final_list = final_list.sort_values(by=['similarity_coefficient'], ascending=False)  # ordenando pela nota
+    final_list = final_list[['movie_id', 'similarity_coefficient']].to_json(index=None, orient="table")
     return final_list
-
 
 def get_similar(id_movie):
     args = f"SELECT id, genre FROM recommend_movie"  # Lista de de filmes
@@ -104,6 +99,6 @@ def get_similar(id_movie):
     final_list = final_list.drop(
         final_list[final_list.similarity_coefficient == 0.0].index)  # removendo notas menores que 3
 
-    final_list = final_list['movie_id'].to_json(index=False, orient="records")
+    final_list = final_list[['movie_id', 'similarity_coefficient']].to_json(index=None, orient="table")
 
     return final_list
