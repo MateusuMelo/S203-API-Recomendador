@@ -96,8 +96,6 @@ def get_similar(id_movie):
 
     final_list = movie_list[['movie_id', 'similarity_coefficient']].sort_values(by=['similarity_coefficient'],
                                                                                 ascending=False)  # ordenando pela nota
-    final_list = final_list.drop(
-        final_list[final_list.similarity_coefficient == 0.0].index)  # removendo notas menores que 3
 
     final_list = final_list[['movie_id', 'similarity_coefficient']].to_json(index=None, orient="table")
 
