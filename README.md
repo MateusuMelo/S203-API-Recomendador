@@ -1,7 +1,7 @@
 <br/>
 <p align="center">
   <a href="https://github.com/MateusuMelo/S203-API-Recomendador">
-    <img src="images/project-logo.png" alt="project-logo" width="400" height="100">
+    <img src="images/project-logo.png" alt="project-logo" width="512" height="512">
   </a>
 
   <p align="center">
@@ -44,10 +44,10 @@ The project is being created for Database class, using Python with a database, w
 
 ## Built With
 
-* Python <img src="images/python-logo.png" alt="python-logologo" width="35" height="35">
-* SQLite <img src="images/sqlite-logo.png" alt="sqlite-logologo" width="35" height="35">
-* Flask <img src="images/flask-logo.png" alt="flask-logologo" width="35" height="35">
-* Visual Studio Code <img src="images/vscode-logo.png" alt="vscode-logologo" width="35" height="35">
+* Python <img src="images/python-logo.png" alt="python-logo" width="35" height="35">
+* SQLite <img src="images/sqlite-logo.png" alt="sqlite-logo" width="35" height="35">
+* Flask <img src="images/flask-logo.png" alt="flask-logo" width="35" height="35">
+* Visual Studio Code <img src="images/vscode-logo.png" alt="vscode-logo" width="35" height="35">
 
 ## Getting Started
 
@@ -55,7 +55,8 @@ After following all the [Instalattion](#installation) guide and running the flas
 
 ### Prerequisites
 
-* python
+* Python
+* Visual Studio Code
 
 [Install last Python version](https://www.python.org/downloads/)
 
@@ -93,7 +94,7 @@ flask run
 
 ## Usage
 *Main Page*
-![Screen Shot](images/mainpage.png)
+<img src="images/mainpage.png" alt="main-page">
 
 # get_similar()
 [API LINK](http://127.0.0.1:5000)
@@ -102,7 +103,7 @@ http://127.0.0.1:5000/similar/<id_movie>.
 
 * exemple : 
 http://127.0.0.1:5000/similar/53
-![Get Sim](images/getsimilar.png.png)
+<img src="images/getsimilar.png" alt="getsimilar">
 
 * results example:
 ```JSON
@@ -184,7 +185,7 @@ http://127.0.0.1:5000/recommend/<id_user>.
 
 * exemple : 
 http://127.0.0.1:5000/recommend/1
-![Recommend](images/recommend.png.png)
+<img src="images/recommend.png" alt="recommend">
 
 * results example:
 ```JSON
@@ -286,9 +287,12 @@ SOFTWARE.
 
 * **Tales Machado** - *Soft Engineer Student* - [Tales Machado](https://github.com/RobinCharles984/)
 * **Mateus Melo** - *Soft Engineer Student* - [Mateus Melo](https://github.com/MateusuMelo/)
+* **Marcelo Alckmin** - *Soft Enginner Student* [Marcelo Alckmin](https://github.com/marceloalckmin)
 
 ## Acknowledgements
 
 * [Tales Machado](https://github.com/RobinCharles984/)
 * [Mateus Melo](https://github.com/MateusuMelo/)
+* [Marcelo Alckmin](https://github.com/marceloalckmin)
+* [Flask](https://flask.palletsprojects.com/en/3.0.x/)
 * [ImgShields](https://shields.io/)
