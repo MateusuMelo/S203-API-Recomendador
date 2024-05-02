@@ -1,7 +1,7 @@
 <br/>
 <p align="center">
   <a href="https://github.com/MateusuMelo/S203-API-Recomendador">
-    <img src="images/logo.png" alt="Logo" width="400" height="100">
+    <img src="images/project-logo.png" alt="project-logo" width="400" height="100">
   </a>
 
   <p align="center">
@@ -37,8 +37,6 @@
 
 ## About The Project
 
-![Screen Shot](images/screenshot.png)
-
 The project is being created for Database class, using Python with a database, we choose SQLite. The project is just a simple recommender where:
 * You can login into system
 * Recommend movies
@@ -46,14 +44,14 @@ The project is being created for Database class, using Python with a database, w
 
 ## Built With
 
-* Python
-* SQLite
-* Flask
-* Visual Studio Code
+* Python <img src="images/python-logo.png" alt="python-logologo" width="35" height="35">
+* SQLite <img src="images/sqlite-logo.png" alt="sqlite-logologo" width="35" height="35">
+* Flask <img src="images/flask-logo.png" alt="flask-logologo" width="35" height="35">
+* Visual Studio Code <img src="images/vscode-logo.png" alt="vscode-logologo" width="35" height="35">
 
 ## Getting Started
 
-Use VSCode <img src="images/vscode.png" alt="vscodelogo" width="35" height="35"> with Python <img src="images/python.png" alt="vscodelogo" width="35" height="35">
+After following all the [Instalattion](#installation) guide and running the flask server, a host will be show in the terminal. CTRL + Click this host link to go to your prefered browser, on just copy and paste. Now follow the [Usage](#usage) guide.
 
 ### Prerequisites
 
@@ -85,7 +83,6 @@ pip install -r requirements.txt
 
 ```sh
 .venv/Scripts/activate
-python main.py
 ```
 5. Run Flask server
 
@@ -95,6 +92,9 @@ flask run
 ```
 
 ## Usage
+*Main Page*
+![Screen Shot](images/mainpage.png)
+
 # get_similar()
 [API LINK](http://127.0.0.1:5000)
 * To get similar movies 
@@ -102,6 +102,7 @@ http://127.0.0.1:5000/similar/<id_movie>.
 
 * exemple : 
 http://127.0.0.1:5000/similar/53
+![Get Sim](images/getsimilar.png.png)
 
 * results example:
 ```JSON
@@ -183,6 +184,7 @@ http://127.0.0.1:5000/recommend/<id_user>.
 
 * exemple : 
 http://127.0.0.1:5000/recommend/1
+![Recommend](images/recommend.png.png)
 
 * results example:
 ```JSON
