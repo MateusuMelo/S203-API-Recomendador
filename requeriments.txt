@@ -1,5 +1,0 @@
-flask
-db-sqlite3
-scikit-learn
-numpy
-pandas
