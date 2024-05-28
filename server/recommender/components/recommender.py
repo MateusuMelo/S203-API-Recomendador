@@ -27,7 +27,6 @@ def get_recommendation(user_id):
     args = f"SELECT id, genre FROM recommend_movie"  # Lista de avaliações do usuario
     results = Database().query(args)
     movie_list = pd.DataFrame(results, columns=["movie_id", "genre"])
-    print(movie_list)
     movie_list['genre'] = movie_list['genre'].str.split(
         ',')  # transformando genre em uma lista de strings. Estava uma unica string
 
@@ -46,6 +45,7 @@ def get_recommendation(user_id):
     merged = pd.merge(movie_list, rating_list, how='outer', indicator=True)
     user_movies = merged[merged['_merge'] == 'both'].drop('_merge', axis=1)
     user_movies = user_movies.drop(user_movies[user_movies.rating <= 3].index)
+    print(user_movies)
 
     final_list = pd.DataFrame(columns=('index', 'movie_id', 'similarity_coefficient'))
     for movie_id_user in user_movies['movie_id']:
@@ -53,9 +53,11 @@ def get_recommendation(user_id):
         for data in similar_movies:
             final_list.loc[len(final_list.index)] = data
 
-    final_list = final_list.groupby('movie_id').agg({'similarity_coefficient': 'mean'}).reset_index()
+    
+    final_list = final_list[~final_list['movie_id'].isin(user_movies['movie_id'])]
     final_list = final_list.sort_values(by=['similarity_coefficient'], ascending=False)  # ordenando pela nota
     final_list = final_list[['movie_id', 'similarity_coefficient']].to_json(index=None, orient="table")
+    
     return final_list
 
 def get_similar(id_movie):
