@@ -1,22 +1,23 @@
 from flask import Flask, json
-from recommender.components.recommender import get_recommendation, get_similar
+from recommender.components.recommender import Recommender
+
+db_file = "./db.sqlite3"
+r = Recommender(db_file)
 
 app = Flask(__name__)
 
-
-@app.route("/recommend/<id_user>",
-           methods=['GET'])  # Fazendo requisição diretamente pelo link. Exemplo: 127.0.0.1:5000/<Id_Usuario>
+@app.route("/recommend/<id_user>", methods=['GET'])  # Fazendo requisição diretamente pelo link. Exemplo: 127.0.0.1:5000/<Id_Usuario>
 def recommend(id_user):
-    movies = json.loads(get_recommendation(id_user))
-    return movies
+    rec = r.get_recommendation(id_user)
+    # Retorna um array vazio caso não existam recomendações para este usuário
+    return [] if not rec else json.loads(rec)
 
 
-@app.route("/similar/<id_movie>",
-           methods=['GET'])  # Fazendo requisição diretamente pelo link. Exemplo: 127.0.0.1:5000/<Id_Usuario>
+@app.route("/similar/<id_movie>", methods=['GET'])  # Fazendo requisição diretamente pelo link. Exemplo: 127.0.0.1:5000/<Id_Usuario>
 def similar(id_movie):
-    movies = json.loads(get_similar(id_movie))
-    return movies
-
+    sim = r.get_similar(id_movie)
+    # Retorna um array vazio caso não existam recomendações para este usuário
+    return [] if not sim else json.loads(sim)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=False)
