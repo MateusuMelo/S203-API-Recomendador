@@ -63,30 +63,30 @@ After following all the [Installation](#installation) guide and running the flas
 
 ### Installation
 
-1. Clone the repo
+1. Clone the repository:
 
 ```sh
 git clone https://github.com/MateusuMelo/S203-API-Recomendador.git
 ```
 
-2. Install virtual environment
+2. Install a virtual environment:
 
 ```sh
 python -m venv .venv
 ```
 
-3. Pip install the packages
+3. Install the required packages:
 
 ```sh
 pip install -r requirements.txt
 ```
 
-4. Run while in virutal environment is activated
+4. Run while in virutal environment:
 
 ```sh
 .venv/Scripts/activate
 ```
-5. Run Flask server
+5. Run the Flask server:
 
 ```sh
 cd server/
