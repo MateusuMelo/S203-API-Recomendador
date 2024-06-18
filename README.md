@@ -37,10 +37,11 @@
 
 ## About The Project
 
-The project is being created for Database class, using Python with a database, we choose SQLite. The project is just a simple recommender where:
-* You can login into system
-* Recommend movies
-* Rate movies
+This project is being developed for a Database class. It utilizes Python and SQLite to create a simple recommendation system. The key features of the project include:
+* User login functionality.
+* Movie recommendations based on user preferences.
+* Movie recommendations based on similarity with other movies.
+* Rating system.
 
 ## Built With
 
@@ -51,7 +52,7 @@ The project is being created for Database class, using Python with a database, w
 
 ## Getting Started
 
-After following all the [Instalattion](#installation) guide and running the flask server, a host will be show in the terminal. CTRL + Click this host link to go to your prefered browser, on just copy and paste. Now follow the [Usage](#usage) guide.
+After following all the [Installation](#installation) guide and running the flask server, a host will be show in the terminal. CTRL + Click this host link to go to your prefered browser, on just copy and paste. Now follow the [Usage](#usage) guide.
 
 ### Prerequisites
 
@@ -65,7 +66,7 @@ After following all the [Instalattion](#installation) guide and running the flas
 1. Clone the repo
 
 ```sh
-git clone [https://github.com/your_username_/Project-Name.git](https://github.com/MateusuMelo/S203-API-Recomendador.git)
+git clone https://github.com/MateusuMelo/S203-API-Recomendador.git
 ```
 
 2. Install virtual environment
