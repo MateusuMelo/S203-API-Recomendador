@@ -45,7 +45,6 @@ def get_recommendation(user_id):
     merged = pd.merge(movie_list, rating_list, how='outer', indicator=True)
     user_movies = merged[merged['_merge'] == 'both'].drop('_merge', axis=1)
     user_movies = user_movies.drop(user_movies[user_movies.rating <= 3].index)
-    print(user_movies)
 
     final_list = pd.DataFrame(columns=('index', 'movie_id', 'similarity_coefficient'))
     for movie_id_user in user_movies['movie_id']:
