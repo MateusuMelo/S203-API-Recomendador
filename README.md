@@ -81,7 +81,7 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
-4. Run while in virutal environment:
+4. Run while in the virtual environment:
 
 ```sh
 .venv/Scripts/activate
